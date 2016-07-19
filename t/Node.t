@@ -8,9 +8,7 @@ use Test::More;
 
 plan tests => 11;
 
-BEGIN {
-    use_ok( 'Devgru::Node' ) || print "Bail out!\n";
-}
+use_ok( 'Devgru::Node' ) || print "Bail out!\n";
 
 my $test_name = 'Test';
 my $end_point = 'EndPoint';
