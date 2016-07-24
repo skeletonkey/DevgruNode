@@ -3,10 +3,11 @@
 use strict;
 use warnings;
 
+use Test::Deep;
 use Test::Exception;
 use Test::More;
 
-plan tests => 18;
+plan tests => 20;
 
 use_ok( 'Devgru::Node' ) || print "Bail out!\n";
 
@@ -49,6 +50,10 @@ is($node->fail_reason, 1234, 'Correct New last_check');
 is($node->status, '', 'Correct status');
 $node->fail_reason('Success');
 is($node->fail_reason, 'Success', 'Correct New status');
+
+cmp_deeply($node->template_vars, [], 'Correct template vars');
+$node->template_vars(qw(a b));
+cmp_deeply($node->template_vars, [qw(a b)], 'Correct New template vars');
 
 throws_ok { Devgru::Node->new(); } qr/No name provided for Devgru::Node/, 'No Name provied';
 throws_ok { Devgru::Node->new( name => 'name' ); } qr/No end_point provided for/, 'No end_point provied';
