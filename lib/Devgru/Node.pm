@@ -42,7 +42,6 @@ sub initialize {
         last_check
         name
         status
-        template_vars
     ));
 
     croak 'No name provided for Devgru::Node'  unless $self->name;
@@ -53,6 +52,8 @@ sub initialize {
     $self->fail_reason('');
     $self->last_check(0);
     $self->status('');
+
+    $self->{template_vars} ||= [];
 }
 
 =head2 current_version
