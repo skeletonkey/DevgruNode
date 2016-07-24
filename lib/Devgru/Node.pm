@@ -20,15 +20,17 @@ Version 0.01
 
 our $VERSION = '0.01';
 
-
 =head1 SYNOPSIS
+
+At this time down (1) and degraded (-1) are both seen as down.
 
 =head1 SUBROUTINES/METHODS
 
 =head2 initialize
 
-=cut
+Sets up the initial state of the node.
 
+=cut
 sub initialize {
     my $self = shift;
 
@@ -53,6 +55,73 @@ sub initialize {
     $self->status('');
 }
 
+=head2 current_version
+
+Set get the current version of the node.
+
+=head2 down_count
+
+The number of times (consecutively) that the node has been found to be down/degraded.
+
+=head2 end_point
+
+The endpoint that is used to determine the node's state.
+
+If this is blank Devgru::Monitor will attempt to use Devgru::Monitor's url template
+and the template_vars to create the end_point.
+
+=head2 fail_reason
+
+If there is more information as to why the node it down it will be placed here.
+
+Note that this will only be the information from the last check.
+
+It should be reset to '' upon a successful connection.
+
+=head2 last_check
+
+Epoch time of the last check of the node
+
+=head2 name
+
+Human readable name of the node.
+
+=head2 status
+
+The status of the node.  Initial state is ignored - should be undef or ''.
+Acceptable states are:
+
+=over 2
+
+=item Devgru::Monitor::SERVER_DOWN
+
+=item Devgru::Monitor::SERVER_UNSTABLE
+
+=item Devgru::Monitor::SERVER_UP
+
+=back
+
+=head2 template_vars
+
+Accepts a list of variables that can be used in conjunction with Devgru Monitor's
+url template to create the end_point.
+
+=cut
+sub template_vars {
+    my $self = shift;
+
+    if (@_) {
+        $self->{template_vars} = [@_];
+    }
+
+    return $self->{template_vars};
+}
+
+=head2 inc_down_count
+
+Increments the down_count by one.
+
+=cut
 sub inc_down_count {
     my $self = shift;
     $self->down_count($self->down_count + 1);
